@@ -1,0 +1,35 @@
+*{
+  margin: 0px;
+  padding:0px;
+}
+
+body{
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+#sky{
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../images/background.jpg");
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+#player{
+  width: 200px;
+  height: 200px;
+  background-image: url("../images/nyan_cat.png");
+  background-position: center center;
+  background-size: cover;
+  position: absolute;
+}
+
+.cookies{
+  width: 75px;
+  height: 75px;
+  background-image: url("../images/sugar_cookies.png");
+  background-position: center center;
+  background-size: cover;
+  position: absolute;
+}
