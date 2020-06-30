@@ -1,21 +1,34 @@
+var cookieId = 0; //counter to number all cookies that ever existed
+/*Class Declarations*/
+//cookie class
+class Cookie{
+  constructor(){
+    this.id = cookieId;
+    this.top = Math.random()*(screen.height - 10);
+    this.right = -50;
+    this.screenCookie = document.createElement('div');
+    this.screenCookie.setAttribute('class','cookie');
+    this.screenCookie.setAttribute('id', JSON.stringify(this.id))
+    cookieId++;
+  }
+
+  delete(){
+    //needs to remove itself from DOM
+  }
+}
+
 /*-------Initialize Positions  and speed of Things---------*/
 var player = {
   left: 50,
   top: 50
 }
-
-var cookies = {
-    right: -50,
-    top: 50
-}
-//will add more to cookies or make it an array later
-//starting position of initial cookies
-
+let firstCookie = new Cookie();
+var cookies=[firstCookie];
 var sky = {
   left: 0
 }
 
-var scrollSpeed = 75; //startin speed of how things move
+var scrollSpeed = 75; //starting speed of how things move
 /*------------Draw the Player-------------------*/
 function drawPlayer(arr){
   var playerPos = document.getElementById('player');
@@ -25,12 +38,21 @@ function drawPlayer(arr){
   playerPos.style.top = player.top.toString() +'px';
 }
 /*-----------Draw the Cookies--------------------*/
+//adding more Cookies
+function addCookie(){
+  let myCookie = new Cookie();
+  cookies.push(myCookie);//add it to the cookies list
+  document.getElementById('allCookies').appendChild(myCookie.screenCookie);
+}
+
 function moveCookies(listOfCookies){
-  var cookieList = document.getElementById('cookies');
-  cookies.right += 10;
-  cookies.top += 0;
-  cookieList.style.right = cookies.right.toString() + 'px';
-  cookieList.style.top = cookies.top.toString() + 'px';
+  var cookieList = document.getElementsByClassName('cookie');
+  for(var i = 0; i < cookieList.length ; i++){
+    cookies[i].right += 10;
+    cookies[i].top += 0;
+    cookieList[i].style.right = cookies[i].right.toString() + 'px';
+    cookieList[i].style.top = cookies[i].top.toString() + 'px';
+  }
 }
 
 function drawCookies(){//has no input and calls moveCookies which is like drawPlayer but for an array of cookies hopefully
@@ -43,6 +65,7 @@ function moveSky(sky){
   sky.left -= 10;
   screenSky.style.backgroundPosition = sky.left.toString() + 'px center';
 }
+
 function drawSky(){
   moveSky(sky);
 }
@@ -67,5 +90,6 @@ document.onkeydown = function movePlayer(direction){
   drawPlayer(arr);
 }
 
+setInterval(addCookie, scrollSpeed*30);
 setInterval(drawCookies, scrollSpeed);
 setInterval(drawSky, scrollSpeed);
