@@ -19,8 +19,8 @@ class Cookie{
 
 /*-------Initialize Positions  and speed of Things---------*/
 var player = {
-  left: 50,
-  top: 50
+  left: 0,
+  top: 0
 }
 let firstCookie = new Cookie();
 var cookies=[firstCookie];
@@ -32,7 +32,7 @@ var scrollSpeed = 75; //starting speed of how things move
 /*------------Draw the Player-------------------*/
 function drawPlayer(arr){
   var playerPos = document.getElementById('player');
-  player.left += arr[0];
+//  player.left += arr[0];
   player.top += arr[1];
   playerPos.style.left = player.left.toString() + 'px';
   playerPos.style.top = player.top.toString() +'px';
@@ -74,15 +74,15 @@ function drawSky(){
 document.onkeydown = function movePlayer(direction){
   let arr = [0,0];//x,y position change
   switch(direction.keyCode){
-    case 37://move left
+    /*case 37://move left
       arr[0] -= 10;
-      break;
+      break;*/
     case 38://move up
       arr[1] -= 10;
       break;
-    case 39://move right
+    /*case 39://move right
       arr[0] += 10;
-      break;
+      break;*/
     case 40://move down
       arr[1] += 10;
       break;
