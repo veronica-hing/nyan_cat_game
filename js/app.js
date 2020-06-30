@@ -3,17 +3,19 @@ var cookieId = 0; //counter to number all cookies that ever existed
 //cookie class
 class Cookie{
   constructor(){
+    //this.status = 1; // 1 if its onscreen, changes to 0 when offscreen
     this.id = cookieId;
     this.top = Math.random()*(screen.height - 10);
-    this.right = -50;
+    this.left = screen.width + 50;
     this.screenCookie = document.createElement('div');
     this.screenCookie.setAttribute('class','cookie');
     this.screenCookie.setAttribute('id', JSON.stringify(this.id))
+    document.getElementById('allCookies').appendChild(this.screenCookie);
     cookieId++;
   }
 
   delete(){
-    //needs to remove itself from DOM
+    document.getElementById('allCookies').removeChild(this.screenCookie);
   }
 }
 
@@ -32,7 +34,7 @@ var scrollSpeed = 75; //starting speed of how things move
 /*------------Draw the Player-------------------*/
 function drawPlayer(arr){
   var playerPos = document.getElementById('player');
-//  player.left += arr[0];
+  player.left += arr[0];
   player.top += arr[1];
   playerPos.style.left = player.left.toString() + 'px';
   playerPos.style.top = player.top.toString() +'px';
@@ -42,20 +44,37 @@ function drawPlayer(arr){
 function addCookie(){
   let myCookie = new Cookie();
   cookies.push(myCookie);//add it to the cookies list
-  document.getElementById('allCookies').appendChild(myCookie.screenCookie);
 }
 
+function removeCookie(aCookie){
+  let cookieSpot = 0;
+  for(var i = 0; i < cookies.length; i++){
+    if(cookies[i].id == aCookie.id){
+      cookieSpot = i;
+    }
+  }//find where the cookie lives in the list
+  let removeCookie = cookies.splice(cookieSpot, 1);//remove cookie from cookies list
+  //calling delete on itself removes itself from DOM
+  aCookie.delete();
+}
+//hitting Cookies, a check that will be called by moveCookies
+function checkCookie(aCookie){
+  if((aCookie.left < player.left)){
+    removeCookie(aCookie);
+  }
+}
 function moveCookies(listOfCookies){
   var cookieList = document.getElementsByClassName('cookie');
   for(var i = 0; i < cookieList.length ; i++){
-    cookies[i].right += 10;
+    cookies[i].left -= 10;
     cookies[i].top += 0;
-    cookieList[i].style.right = cookies[i].right.toString() + 'px';
+    cookieList[i].style.left = cookies[i].left.toString() + 'px';
     cookieList[i].style.top = cookies[i].top.toString() + 'px';
+    checkCookie(cookies[i]);
   }
 }
 
-function drawCookies(){//has no input and calls moveCookies which is like drawPlayer but for an array of cookies hopefully
+function drawCookies(){//has no input and calls moveCookies which is like drawPlayer but for an array of cookies
   moveCookies(cookies);
 }
 
@@ -74,15 +93,15 @@ function drawSky(){
 document.onkeydown = function movePlayer(direction){
   let arr = [0,0];//x,y position change
   switch(direction.keyCode){
-    /*case 37://move left
+    case 37://move left
       arr[0] -= 10;
-      break;*/
+      break;//*/
     case 38://move up
       arr[1] -= 10;
       break;
-    /*case 39://move right
+    case 39://move right
       arr[0] += 10;
-      break;*/
+      break;//*/
     case 40://move down
       arr[1] += 10;
       break;
