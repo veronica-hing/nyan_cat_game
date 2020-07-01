@@ -1,9 +1,9 @@
 var cookieId = 0; //counter to number all cookies that ever existed
 /*Class Declarations*/
+let myPoints = document.getElementById('counter');
 //cookie class
 class Cookie{
   constructor(){
-    //this.status = 1; // 1 if its onscreen, changes to 0 when offscreen
     this.id = cookieId;
     this.top = Math.random()*(screen.height - 10);
     this.left = screen.width + 50;
@@ -22,7 +22,8 @@ class Cookie{
 /*-------Initialize Positions  and speed of Things---------*/
 var player = {
   left: 0,
-  top: 0
+  top: 0,
+  points: 0
 }
 let firstCookie = new Cookie();
 var cookies=[firstCookie];
@@ -39,6 +40,7 @@ function drawPlayer(arr){
   playerPos.style.left = player.left.toString() + 'px';
   playerPos.style.top = player.top.toString() +'px';
 }
+
 /*-----------Draw the Cookies--------------------*/
 //adding more Cookies
 function addCookie(){
@@ -53,14 +55,28 @@ function removeCookie(aCookie){
       cookieSpot = i;
     }
   }//find where the cookie lives in the list
-  let removeCookie = cookies.splice(cookieSpot, 1);//remove cookie from cookies list
-  //calling delete on itself removes itself from DOM
-  aCookie.delete();
+  let removeCookie = cookies.splice(cookieSpot, 1);//remove cookie from list
+  aCookie.delete();//calling delete on itself removes itself from DOM
 }
-//hitting Cookies, a check that will be called by moveCookies
-function checkCookie(aCookie){
-  if((aCookie.left < player.left)){
+//removes cookies that have fallen offscreen
+function fallenCookie(aCookie){
+  if((aCookie.left < -75)){
     removeCookie(aCookie);
+  }
+}
+//checks if numbers are close enough
+function closeEnough(a,b){
+  if(Math.abs(a/b - 1) < .3){
+    return true;
+  }
+  return false;
+}
+//removes cookies that have been booped and adds 5 to player.points
+function boopedCookie(aCookie){
+  if(closeEnough(aCookie.left, player.left)&&closeEnough(aCookie.top, player.top)){
+    player.points += 5;
+    removeCookie(aCookie);
+    myPoints.innerHTML = player.points;
   }
 }
 function moveCookies(listOfCookies){
@@ -70,7 +86,8 @@ function moveCookies(listOfCookies){
     cookies[i].top += 0;
     cookieList[i].style.left = cookies[i].left.toString() + 'px';
     cookieList[i].style.top = cookies[i].top.toString() + 'px';
-    checkCookie(cookies[i]);
+    fallenCookie(cookies[i]);//checks if it fell offscreen
+    boopedCookie(cookies[i]);//checks if player hit it
   }
 }
 
