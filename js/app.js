@@ -32,7 +32,7 @@ var sky = {
 }
 
 var scrollSpeed = 75; //starting speed of how things move
-/*------------Draw the Player-------------------*/
+/*------------Draw the Player------------------------------*/
 function drawPlayer(arr){
   var playerPos = document.getElementById('player');
   player.left += arr[0];
@@ -64,16 +64,20 @@ function fallenCookie(aCookie){
     removeCookie(aCookie);
   }
 }
-//checks if numbers are close enough
+//checks if divs overlap
+
 function closeEnough(a,b){
-  if(Math.abs(a/b - 1) < .3){
-    return true;
-  }
-  return false;
+  let rect1 = a.getBoundingClientRect();
+  let rect2 = b.getBoundingClientRect();
+  let isInHoriztonalBounds = rect1.x < rect2.x + rect2.width && rect1.x + rect1.width > rect2.x;
+  let isInVerticalBounds = rect1.y < rect2.y + rect2.height && rect1.y + rect1.height > rect2.y;
+  let isOverlapping = isInHoriztonalBounds && isInVerticalBounds;
+  return isOverlapping;
 }
 //removes cookies that have been booped and adds 5 to player.points
-function boopedCookie(aCookie){
-  if(closeEnough(aCookie.left, player.left)&&closeEnough(aCookie.top, player.top)){
+function boopedCookie(aCookieDiv, aCookie){
+  let playerDiv = document.getElementById('player');
+  if(closeEnough(aCookieDiv,playerDiv)){
     player.points += 5;
     removeCookie(aCookie);
     myPoints.innerHTML = player.points;
@@ -87,7 +91,8 @@ function moveCookies(listOfCookies){
     cookieList[i].style.left = cookies[i].left.toString() + 'px';
     cookieList[i].style.top = cookies[i].top.toString() + 'px';
     fallenCookie(cookies[i]);//checks if it fell offscreen
-    boopedCookie(cookies[i]);//checks if player hit it
+    boopedCookie(cookieList[i], cookies[i]);//uses the DOM
+    //boopedCookie(cookies[i]);//checks if player hit it
   }
 }
 
