@@ -29,7 +29,7 @@ body{
 }
 #player{
   width: 200px;
-  height: 200px;
+  height: 65px;
   background-image: url("../images/nyan_cat.png");
   background-position: center center;
   background-size: cover;
@@ -37,9 +37,9 @@ body{
 }
 
 .cookie{
-  width: 75px;
-  height: 75px;
-  background-image: url("../images/sugar_cookies.png");
+  width: 45px;
+  height: 45px;
+  background-image: url("../images/dark_cookie.png");
   background-position: center center;
   background-size: cover;
   position: absolute;

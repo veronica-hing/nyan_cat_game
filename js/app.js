@@ -31,7 +31,7 @@ var sky = {
   left: 0
 }
 
-var scrollSpeed = 75; //starting speed of how things move
+var scrollSpeed = 100; //starting speed of how things move
 /*------------Draw the Player------------------------------*/
 function drawPlayer(arr){
   var playerPos = document.getElementById('player');
@@ -100,8 +100,17 @@ function drawCookies(){//has no input and calls moveCookies which is like drawPl
   moveCookies(cookies);
 }
 
+/*----------MAKE IT SPICY------------------------*/
+function faster(){
+  scrollSpeed *= .5;
+}
+
 /*-----------Draw the Sky-----------------------*/
 function moveSky(sky){
+  if(player.points%25 == 0){
+    faster();
+    console.log(scrollSpeed);
+  }
   var screenSky = document.getElementById('sky');
   sky.left -= 10;
   screenSky.style.backgroundPosition = sky.left.toString() + 'px center';
@@ -131,6 +140,6 @@ document.onkeydown = function movePlayer(direction){
   drawPlayer(arr);
 }
 
-setInterval(addCookie, scrollSpeed*30);
+setInterval(addCookie, scrollSpeed*15);
 setInterval(drawCookies, scrollSpeed);
 setInterval(drawSky, scrollSpeed);
